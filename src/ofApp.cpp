@@ -18,6 +18,21 @@ void ofApp::draw(){
 }
 
 //--------------------------------------------------------------
+void ofApp::setupControls() {
+	
+}
+
+//--------------------------------------------------------------
+void ofApp::updateControls(ofEventArgs& args) {
+	updateTitle();
+}
+
+//--------------------------------------------------------------
+void ofApp::drawControls(ofEventArgs& args) {
+	camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
+}
+
+//--------------------------------------------------------------
 void ofApp::updateTitle() {
 	stringstream titleStream;
 	titleStream << PROJECT_NAME << " - " << CREATOR << " - FPS: " << static_cast<int>(ofGetFrameRate());
@@ -37,7 +52,7 @@ void ofApp::beginCamera() {
 	}
 
 	camera.setDeviceID(0);
-	camera.setDesiredFrameRate(60);
+	camera.setDesiredFrameRate(30);
 	camera.setup(CAMERA_WIDTH, CAMERA_HEIGHT);
 }
 

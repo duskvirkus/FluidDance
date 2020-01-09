@@ -18,6 +18,10 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
+		void setupControls();
+		void updateControls(ofEventArgs& args);
+		void drawControls(ofEventArgs& args);
+
 		void updateTitle();
 
 		void beginCamera();
