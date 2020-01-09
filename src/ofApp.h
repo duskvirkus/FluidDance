@@ -2,17 +2,25 @@
 
 #include "ofMain.h"
 
-#define PROJECT_NAME "Fluid Dance"
-#define CREATOR "Violet Graham"
+constexpr char* PROJECT_NAME = "Fluid Dance";
+constexpr char* CREATOR = "Violet Graham";
+constexpr int CAMERA_WIDTH = 1920;
+constexpr int CAMERA_HEIGHT = 1080;
+
 
 class ofApp : public ofBaseApp{
 
 	public:
+
+		ofVideoGrabber camera;
+
 		void setup();
 		void update();
 		void draw();
 
 		void updateTitle();
+
+		void beginCamera();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
