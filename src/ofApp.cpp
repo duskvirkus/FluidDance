@@ -14,22 +14,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	camera.draw(0, 0, ofGetWidth(), ofGetHeight());
-}
-
-//--------------------------------------------------------------
-void ofApp::setupControls() {
-	
-}
-
-//--------------------------------------------------------------
-void ofApp::updateControls(ofEventArgs& args) {
-	updateTitle();
-}
-
-//--------------------------------------------------------------
-void ofApp::drawControls(ofEventArgs& args) {
-	camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
+	const auto width = ofGetWidth() * scaleSlider;
+	const auto height = ofGetHeight() * scaleSlider;
+	camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
 }
 
 //--------------------------------------------------------------
@@ -109,4 +96,22 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+void ofApp::setupControls() {
+	gui.setup();
+	gui.setPosition(0, ofGetHeight() / 2);
+	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
+}
+
+//--------------------------------------------------------------
+void ofApp::updateControls(ofEventArgs& args) {
+	updateTitle();
+}
+
+//--------------------------------------------------------------
+void ofApp::drawControls(ofEventArgs& args) {
+	camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
+	gui.draw();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 
 constexpr char* PROJECT_NAME = "Fluid Dance";
 constexpr char* CREATOR = "Violet Graham";
@@ -18,10 +19,6 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
-		void setupControls();
-		void updateControls(ofEventArgs& args);
-		void drawControls(ofEventArgs& args);
-
 		void updateTitle();
 
 		void beginCamera();
@@ -37,5 +34,14 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		// controls
+
+		ofxPanel gui;
+		ofxFloatSlider scaleSlider;
+
+		void setupControls();
+		void updateControls(ofEventArgs& args);
+		void drawControls(ofEventArgs& args);
 		
 };
