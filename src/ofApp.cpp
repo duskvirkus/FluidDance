@@ -2,6 +2,14 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+
+#ifdef TARGET_OPENGLES
+	cout << "Project unsupported on this system! Press enter to exit." << '\n';
+	cin.get();
+	exit(1);
+#endif
+	assert(ofIsGLProgrammableRenderer());
+
 	beginCamera();
 
 	framesBuffer.reserve(FRAMES_MAX + 2);
@@ -29,6 +37,11 @@ void ofApp::setup() {
 
 	ofEnableAlphaBlending();
 	ofSetBackgroundColor(255, 0, 0);
+
+	gui.setup();
+	gui.setPosition(0, 0);
+	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
+
 }
 
 //--------------------------------------------------------------
@@ -70,12 +83,14 @@ void ofApp::draw(){
 	//	frameMasks[i].draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
 	//}
 
-	if (framesBuffer.size()) {
-		const int maskWidth = ofGetWidth() / framesBuffer.size();
-		for (size_t i = 0; i < framesBuffer.size(); ++i) {
-			framesBuffer[i].getAlphaMask()->draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
-		}
-	}
+	//if (framesBuffer.size()) {
+	//	const int maskWidth = ofGetWidth() / framesBuffer.size();
+	//	for (size_t i = 0; i < framesBuffer.size(); ++i) {
+	//		framesBuffer[i].getAlphaMask()->draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
+	//	}
+	//}
+
+	gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -157,21 +172,21 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::setupControls() {
-	gui.setup();
-	gui.setPosition(0, ofGetHeight() / 2);
-	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
-}
-
-//--------------------------------------------------------------
-void ofApp::updateControls(ofEventArgs& args) {
-	updateTitle();
-}
-
-//--------------------------------------------------------------
-void ofApp::drawControls(ofEventArgs& args) {
-	camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
-
-	gui.draw();
-}
+////--------------------------------------------------------------
+//void ofApp::setupControls() {
+//	gui.setup();
+//	gui.setPosition(0, 0);
+//	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
+//}
+//
+////--------------------------------------------------------------
+//void ofApp::updateControls(ofEventArgs& args) {
+//	updateTitle();
+//}
+//
+////--------------------------------------------------------------
+//void ofApp::drawControls(ofEventArgs& args) {
+//	//camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
+//
+//	gui.draw();
+//}

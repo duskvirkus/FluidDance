@@ -45,8 +45,8 @@ class ofApp : public ofBaseApp{
 		ofxPanel gui;
 		ofxFloatSlider scaleSlider;
 
-		void setupControls();
-		void updateControls(ofEventArgs& args);
-		void drawControls(ofEventArgs& args);
+		//void setupControls();
+		//void updateControls(ofEventArgs& args);
+		//void drawControls(ofEventArgs& args);
 		
 };
