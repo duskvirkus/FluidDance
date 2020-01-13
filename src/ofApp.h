@@ -1,11 +1,13 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 
 constexpr char* PROJECT_NAME = "Fluid Dance";
 constexpr char* CREATOR = "Violet Graham";
 constexpr int CAMERA_WIDTH = 1920;
 constexpr int CAMERA_HEIGHT = 1080;
+constexpr int FRAMES_MAX = 10;
 
 
 class ofApp : public ofBaseApp{
@@ -13,6 +15,10 @@ class ofApp : public ofBaseApp{
 	public:
 
 		ofVideoGrabber camera;
+
+		ofPixels pixelsBuffer;
+		vector<ofTexture> framesBuffer;
+		vector<ofTexture> frameMasks;
 
 		void setup();
 		void update();
@@ -33,5 +39,14 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		// controls
+
+		ofxPanel gui;
+		ofxFloatSlider scaleSlider;
+
+		void setupControls();
+		void updateControls(ofEventArgs& args);
+		void drawControls(ofEventArgs& args);
 		
 };
