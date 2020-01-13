@@ -33,4 +33,5 @@
 
 .vs
 obj
-bin
+bin/*
+!bin/data
