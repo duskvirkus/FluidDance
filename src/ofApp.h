@@ -7,6 +7,7 @@ constexpr char* PROJECT_NAME = "Fluid Dance";
 constexpr char* CREATOR = "Violet Graham";
 constexpr int CAMERA_WIDTH = 1920;
 constexpr int CAMERA_HEIGHT = 1080;
+constexpr int FRAMES_MAX = 10;
 
 
 class ofApp : public ofBaseApp{
@@ -14,6 +15,10 @@ class ofApp : public ofBaseApp{
 	public:
 
 		ofVideoGrabber camera;
+
+		ofPixels pixelsBuffer;
+		vector<ofTexture> framesBuffer;
+		vector<ofTexture> frameMasks;
 
 		void setup();
 		void update();

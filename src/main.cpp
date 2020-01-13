@@ -18,7 +18,7 @@ ofGLFWWindowSettings createSettings(const glm::vec2& size, const glm::vec2& posi
 int main(){
 	
 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(createSettings(
-		glm::vec2(CAMERA_WIDTH / 1, CAMERA_HEIGHT / 1),
+		glm::vec2(CAMERA_WIDTH, CAMERA_HEIGHT),
 		glm::vec2(50, 50),
 		false,
 		nullopt
@@ -26,7 +26,7 @@ int main(){
 
 	shared_ptr<ofAppBaseWindow> controlsWindow = ofCreateWindow(createSettings(
 		glm::vec2(CAMERA_WIDTH / 4, CAMERA_HEIGHT / 2),
-		glm::vec2(100 + CAMERA_WIDTH / 2, 50),
+		glm::vec2(100 + CAMERA_WIDTH, 50),
 		true,
 		mainWindow
 	));

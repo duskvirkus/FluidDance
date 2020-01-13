@@ -1,8 +1,34 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
+void ofApp::setup() {
 	beginCamera();
+
+	framesBuffer.reserve(FRAMES_MAX + 2);
+	frameMasks.reserve(FRAMES_MAX);
+
+	pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
+
+	for (size_t i = 0; i < FRAMES_MAX; ++i) {
+		for (size_t j = 0; j < pixelsBuffer.getWidth(); ++j) {
+			for (size_t k = 0; k < pixelsBuffer.getHeight(); ++k) {
+				const auto row = k / static_cast<int>(CAMERA_HEIGHT / FRAMES_MAX);
+				if (row == i) {
+					pixelsBuffer.setColor(j, k, ofColor(255, 255, 255, 255));
+				}
+				else {
+					pixelsBuffer.setColor(j, k, ofColor(0, 0, 0, 0));
+				}
+			}
+		}
+		ofTexture texture;
+		texture.allocate(pixelsBuffer);
+		texture.loadData(pixelsBuffer);
+		frameMasks.push_back(texture);
+	}
+
+	ofEnableAlphaBlending();
+	ofSetBackgroundColor(255, 0, 0);
 }
 
 //--------------------------------------------------------------
@@ -10,13 +36,46 @@ void ofApp::update(){
 	updateTitle();
 
 	camera.update();
+
+	if (camera.isFrameNew()) {
+		pixelsBuffer = camera.getPixels();
+		ofTexture texture;
+		texture.allocate(pixelsBuffer);
+		texture.loadData(pixelsBuffer);
+		framesBuffer.push_back(texture);
+
+		while (framesBuffer.size() > FRAMES_MAX) {
+			framesBuffer.erase(framesBuffer.begin());
+		}
+
+		for (size_t i = 0; i < framesBuffer.size(); ++i) {
+			framesBuffer[i].setAlphaMask(frameMasks[i]);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 	const auto width = ofGetWidth() * scaleSlider;
 	const auto height = ofGetHeight() * scaleSlider;
-	camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+	//camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+
+	for (const auto& frame : framesBuffer) {
+		frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+	}
+
+	//display masks
+	//const int maskWidth = ofGetWidth() / frameMasks.size();
+	//for (size_t i = 0; i < frameMasks.size(); ++i) {
+	//	frameMasks[i].draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
+	//}
+
+	if (framesBuffer.size()) {
+		const int maskWidth = ofGetWidth() / framesBuffer.size();
+		for (size_t i = 0; i < framesBuffer.size(); ++i) {
+			framesBuffer[i].getAlphaMask()->draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -113,5 +172,6 @@ void ofApp::updateControls(ofEventArgs& args) {
 //--------------------------------------------------------------
 void ofApp::drawControls(ofEventArgs& args) {
 	camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
+
 	gui.draw();
 }
