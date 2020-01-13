@@ -10,33 +10,40 @@ void ofApp::setup() {
 #endif
 	assert(ofIsGLProgrammableRenderer());
 
+	ofEnableAlphaBlending();
+
 	beginCamera();
 
-	framesBuffer.reserve(FRAMES_MAX + 2);
-	frameMasks.reserve(FRAMES_MAX);
+	plane.set(ofGetWidth(), ofGetHeight(), ofGetWidth() / 20, ofGetHeight() / 20, OF_PRIMITIVE_TRIANGLES);
+	
+	shader.load("fluid");
 
-	pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
-
-	for (size_t i = 0; i < FRAMES_MAX; ++i) {
-		for (size_t j = 0; j < pixelsBuffer.getWidth(); ++j) {
-			for (size_t k = 0; k < pixelsBuffer.getHeight(); ++k) {
-				const auto row = k / static_cast<int>(CAMERA_HEIGHT / FRAMES_MAX);
-				if (row == i) {
-					pixelsBuffer.setColor(j, k, ofColor(255, 255, 255, 255));
-				}
-				else {
-					pixelsBuffer.setColor(j, k, ofColor(0, 0, 0, 0));
-				}
-			}
-		}
-		ofTexture texture;
-		texture.allocate(pixelsBuffer);
-		texture.loadData(pixelsBuffer);
-		frameMasks.push_back(texture);
-	}
-
-	ofEnableAlphaBlending();
 	ofSetBackgroundColor(255, 0, 0);
+
+	frames.reserve(FRAMES_MAX + 2);
+	//frameMasks.reserve(FRAMES_MAX);
+
+	//pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
+
+	//for (size_t i = 0; i < FRAMES_MAX; ++i) {
+	//	for (size_t j = 0; j < pixelsBuffer.getWidth(); ++j) {
+	//		for (size_t k = 0; k < pixelsBuffer.getHeight(); ++k) {
+	//			const auto row = k / static_cast<int>(CAMERA_HEIGHT / FRAMES_MAX);
+	//			if (row == i) {
+	//				pixelsBuffer.setColor(j, k, ofColor(255, 255, 255, 255));
+	//			}
+	//			else {
+	//				pixelsBuffer.setColor(j, k, ofColor(0, 0, 0, 0));
+	//			}
+	//		}
+	//	}
+	//	ofTexture texture;
+	//	texture.allocate(pixelsBuffer);
+	//	texture.loadData(pixelsBuffer);
+	//	frameMasks.push_back(texture);
+	//}
+
+	
 
 	gui.setup();
 	gui.setPosition(0, 0);
@@ -55,26 +62,45 @@ void ofApp::update(){
 		ofTexture texture;
 		texture.allocate(pixelsBuffer);
 		texture.loadData(pixelsBuffer);
-		framesBuffer.push_back(texture);
+		frames.push_back(texture);
 
-		while (framesBuffer.size() > FRAMES_MAX) {
-			framesBuffer.erase(framesBuffer.begin());
+		while (frames.size() > FRAMES_MAX) {
+			frames.erase(frames.begin());
 		}
 
-		for (size_t i = 0; i < framesBuffer.size(); ++i) {
-			framesBuffer[i].setAlphaMask(frameMasks[i]);
-		}
+		//for (size_t i = 0; i < framesBuffer.size(); ++i) {
+		//	framesBuffer[i].setAlphaMask(frameMasks[i]);
+		//}
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	const auto width = ofGetWidth() * scaleSlider;
-	const auto height = ofGetHeight() * scaleSlider;
-	//camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+	//const auto width = ofGetWidth() * scaleSlider;
+	//const auto height = ofGetHeight() * scaleSlider;
+	////camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
 
-	for (const auto& frame : framesBuffer) {
-		frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+	//for (const auto& frame : frames) {
+	//	frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
+	//}
+
+	if (frames.size() > 0) {
+		for (size_t i = 0; i < 1; i++) {
+			plane.mapTexCoordsFromTexture(frames[i]);
+
+			frames[i].bind();
+
+			shader.begin();
+
+			ofPushMatrix();
+			ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+			plane.draw();
+			ofPopMatrix();
+
+			shader.end();
+
+			frames[i].unbind();
+		}
 	}
 
 	//display masks

@@ -17,8 +17,10 @@ class ofApp : public ofBaseApp{
 		ofVideoGrabber camera;
 
 		ofPixels pixelsBuffer;
-		vector<ofTexture> framesBuffer;
-		vector<ofTexture> frameMasks;
+		vector<ofTexture> frames;
+
+		ofShader shader;
+		ofPlanePrimitive plane;
 
 		void setup();
 		void update();

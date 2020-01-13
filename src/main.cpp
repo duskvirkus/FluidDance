@@ -19,7 +19,7 @@ int main(){
 
 	ofGLFWWindowSettings settings;
 	settings.setSize(CAMERA_WIDTH, CAMERA_HEIGHT);
-	settings.setPosition(glm::vec2(0, 20));
+	settings.setPosition(glm::vec2(0, 30));
 	settings.resizable = false;
 	settings.setGLVersion(3, 2);
 
