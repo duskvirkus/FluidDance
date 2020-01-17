@@ -2,8 +2,8 @@
 
 uniform sampler2DRect tex0;
 uniform vec2 u_window;
-uniform float u_position;
-uniform float u_size;
+uniform float u_section;
+uniform float u_offset;
 
 in vec2 v_texcoord;
 out vec4 color;
@@ -31,6 +31,6 @@ void main()
 
     vec4 tex = texture(tex0, v_texcoord);
 
-	color = tex * vec4(vec3(1.0), createMask(4.0, 0.0, y));
+	color = tex * vec4(vec3(1.0), createMask(u_section, u_offset, y));
 
 }

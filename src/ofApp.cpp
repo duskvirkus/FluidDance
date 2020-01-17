@@ -10,6 +10,11 @@ void ofApp::setup() {
 #endif
 	assert(ofIsGLProgrammableRenderer());
 
+#ifdef _DEBUG
+	ofSetLogLevel(ofLogLevel::OF_LOG_VERBOSE);
+	ofLogToFile("logfile.log", true);
+#endif
+
 	ofEnableAlphaBlending();
 
 	beginCamera();
@@ -18,36 +23,11 @@ void ofApp::setup() {
 	
 	shader.load("fluid");
 
-	ofSetBackgroundColor(255, 0, 0);
+	ofSetBackgroundColor(0);
 
-	frames.reserve(FRAMES_MAX + 2);
-	//frameMasks.reserve(FRAMES_MAX);
+	controls.setup();
 
-	//pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
-
-	//for (size_t i = 0; i < FRAMES_MAX; ++i) {
-	//	for (size_t j = 0; j < pixelsBuffer.getWidth(); ++j) {
-	//		for (size_t k = 0; k < pixelsBuffer.getHeight(); ++k) {
-	//			const auto row = k / static_cast<int>(CAMERA_HEIGHT / FRAMES_MAX);
-	//			if (row == i) {
-	//				pixelsBuffer.setColor(j, k, ofColor(255, 255, 255, 255));
-	//			}
-	//			else {
-	//				pixelsBuffer.setColor(j, k, ofColor(0, 0, 0, 0));
-	//			}
-	//		}
-	//	}
-	//	ofTexture texture;
-	//	texture.allocate(pixelsBuffer);
-	//	texture.loadData(pixelsBuffer);
-	//	frameMasks.push_back(texture);
-	//}
-
-	
-
-	gui.setup();
-	gui.setPosition(0, 0);
-	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
+	frames.reserve(controls.getFrameBufferSize() * 4);
 
 }
 
@@ -64,39 +44,40 @@ void ofApp::update(){
 		texture.loadData(pixelsBuffer);
 		frames.push_back(texture);
 
-		while (frames.size() > FRAMES_MAX) {
+		while (frames.size() > controls.getFrameBufferSize()) {
 			frames.erase(frames.begin());
 		}
 
-		//for (size_t i = 0; i < framesBuffer.size(); ++i) {
-		//	framesBuffer[i].setAlphaMask(frameMasks[i]);
-		//}
 	}
+
+	ofSetFrameRate(30);
+
+	controls.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	//const auto width = ofGetWidth() * scaleSlider;
-	//const auto height = ofGetHeight() * scaleSlider;
-	////camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
 
-	//for (const auto& frame : frames) {
-	//	frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
-	//}
+	const int sectionSize = controls.getFrameBufferSize() / 2;
+	const glm::vec2 window(ofGetWidth(), ofGetHeight());
 
 	if (frames.size() > 0) {
-		for (size_t i = 0; i < 1; i++) {
+		for (size_t i = 0; i < frames.size(); ++i) {
+			const float offset = ofMap(i, 0, frames.size(), -0.5, 0.5) + ((1.0f / sectionSize) / 2.0f);
+
 			plane.mapTexCoordsFromTexture(frames[i]);
 
 			frames[i].bind();
 
 			shader.begin();
 
-			shader.setUniform2f("u_window", glm::vec2(ofGetWidth(), ofGetHeight()));
+			shader.setUniform2f("u_window", window);
+			shader.setUniform1f("u_section", static_cast<float>(sectionSize));
+			shader.setUniform1f("u_offset", offset);
 
 			ofPushMatrix();
 			ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-			const float scale = scaleSlider;
+			const float scale = controls.getScale();
 			ofScale(glm::vec3(scale, -scale, scale));
 			plane.draw();
 			ofPopMatrix();
@@ -107,20 +88,7 @@ void ofApp::draw(){
 		}
 	}
 
-	//display masks
-	//const int maskWidth = ofGetWidth() / frameMasks.size();
-	//for (size_t i = 0; i < frameMasks.size(); ++i) {
-	//	frameMasks[i].draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
-	//}
-
-	//if (framesBuffer.size()) {
-	//	const int maskWidth = ofGetWidth() / framesBuffer.size();
-	//	for (size_t i = 0; i < framesBuffer.size(); ++i) {
-	//		framesBuffer[i].getAlphaMask()->draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
-	//	}
-	//}
-
-	gui.draw();
+	controls.draw();
 }
 
 //--------------------------------------------------------------
@@ -201,22 +169,3 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
-////--------------------------------------------------------------
-//void ofApp::setupControls() {
-//	gui.setup();
-//	gui.setPosition(0, 0);
-//	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
-//}
-//
-////--------------------------------------------------------------
-//void ofApp::updateControls(ofEventArgs& args) {
-//	updateTitle();
-//}
-//
-////--------------------------------------------------------------
-//void ofApp::drawControls(ofEventArgs& args) {
-//	//camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
-//
-//	gui.draw();
-//}
