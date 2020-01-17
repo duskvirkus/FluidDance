@@ -16,25 +16,41 @@ ofGLFWWindowSettings createSettings(const glm::vec2& size, const glm::vec2& posi
 
 //========================================================================
 int main(){
-	
-	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(createSettings(
-		glm::vec2(CAMERA_WIDTH, CAMERA_HEIGHT),
-		glm::vec2(50, 50),
-		false,
-		nullopt
-	));
 
-	shared_ptr<ofAppBaseWindow> controlsWindow = ofCreateWindow(createSettings(
-		glm::vec2(CAMERA_WIDTH / 4, CAMERA_HEIGHT / 2),
-		glm::vec2(100 + CAMERA_WIDTH, 50),
-		true,
-		mainWindow
-	));
+	ofGLFWWindowSettings settings;
+	settings.setSize(CAMERA_WIDTH, CAMERA_HEIGHT);
+	settings.setPosition(glm::vec2(0, 30));
+	settings.resizable = false;
+	settings.setGLVersion(3, 2);
+
+	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
+
+	//settings = ofGLFWWindowSettings();
+	//settings.setSize(CAMERA_WIDTH / 4, CAMERA_HEIGHT);
+	//settings.setPosition(glm::vec2(100 + CAMERA_WIDTH, 50));
+	//settings.resizable = true;
+
+	//shared_ptr<ofAppBaseWindow> controlsWindow = ofCreateWindow(settings);
+
+
+	//shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(createSettings(
+	//	glm::vec2(CAMERA_WIDTH, CAMERA_HEIGHT),
+	//	glm::vec2(50, 50),
+	//	false,
+	//	nullopt
+	//));
+
+	//shared_ptr<ofAppBaseWindow> controlsWindow = ofCreateWindow(createSettings(
+	//	glm::vec2(CAMERA_WIDTH / 4, CAMERA_HEIGHT / 2),
+	//	glm::vec2(100 + CAMERA_WIDTH, 50),
+	//	true,
+	//	mainWindow
+	//));
 
 	shared_ptr<ofApp> mainApp(new ofApp);
-	mainApp->setupControls();
-	ofAddListener(controlsWindow->events().update, mainApp.get(), &ofApp::updateControls);
-	ofAddListener(controlsWindow->events().draw, mainApp.get(), &ofApp::drawControls);
+	//mainApp->setupControls();
+	//ofAddListener(controlsWindow->events().update, mainApp.get(), &ofApp::updateControls);
+	//ofAddListener(controlsWindow->events().draw, mainApp.get(), &ofApp::drawControls);
 
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();
