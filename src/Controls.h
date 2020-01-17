@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxLaunchControllers.h"
 
 class Controls {
 
@@ -19,9 +20,11 @@ public:
 
 private:
 	
-	bool show = true;
+	ofxLaunchControl lc;
+
 	ofxPanel gui;
 
-	ofxFloatSlider scale;
+	ofParameter<bool> show;
+	ofParameter<float> scale;
 
 };

@@ -10,6 +10,12 @@ void ofApp::setup() {
 #endif
 	assert(ofIsGLProgrammableRenderer());
 
+#ifdef _DEBUG
+	ofSetLogLevel(ofLogLevel::OF_LOG_VERBOSE);
+	ofLogToFile("logfile.log", true);
+#endif
+
+
 	ofEnableAlphaBlending();
 
 	beginCamera();

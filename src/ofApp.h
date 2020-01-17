@@ -10,7 +10,6 @@ constexpr int CAMERA_WIDTH = 1920;
 constexpr int CAMERA_HEIGHT = 1080;
 constexpr int FRAMES_MAX = 10;
 
-
 class ofApp : public ofBaseApp{
 
 	public:
