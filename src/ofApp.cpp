@@ -92,8 +92,12 @@ void ofApp::draw(){
 
 			shader.begin();
 
+			shader.setUniform2f("u_window", glm::vec2(ofGetWidth(), ofGetHeight()));
+
 			ofPushMatrix();
 			ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+			const float scale = scaleSlider;
+			ofScale(glm::vec3(scale, -scale, scale));
 			plane.draw();
 			ofPopMatrix();
 
