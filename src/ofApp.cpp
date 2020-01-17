@@ -29,30 +29,6 @@ void ofApp::setup() {
 
 	frames.reserve(controls.getFrameBufferSize() * 4);
 
-	//frameMasks.reserve(FRAMES_MAX);
-
-	//pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
-
-	//for (size_t i = 0; i < FRAMES_MAX; ++i) {
-	//	for (size_t j = 0; j < pixelsBuffer.getWidth(); ++j) {
-	//		for (size_t k = 0; k < pixelsBuffer.getHeight(); ++k) {
-	//			const auto row = k / static_cast<int>(CAMERA_HEIGHT / FRAMES_MAX);
-	//			if (row == i) {
-	//				pixelsBuffer.setColor(j, k, ofColor(255, 255, 255, 255));
-	//			}
-	//			else {
-	//				pixelsBuffer.setColor(j, k, ofColor(0, 0, 0, 0));
-	//			}
-	//		}
-	//	}
-	//	ofTexture texture;
-	//	texture.allocate(pixelsBuffer);
-	//	texture.loadData(pixelsBuffer);
-	//	frameMasks.push_back(texture);
-	//}
-
-	
-
 }
 
 //--------------------------------------------------------------
@@ -72,9 +48,6 @@ void ofApp::update(){
 			frames.erase(frames.begin());
 		}
 
-		//for (size_t i = 0; i < framesBuffer.size(); ++i) {
-		//	framesBuffer[i].setAlphaMask(frameMasks[i]);
-		//}
 	}
 
 	ofSetFrameRate(30);
@@ -84,13 +57,6 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	//const auto width = ofGetWidth() * scaleSlider;
-	//const auto height = ofGetHeight() * scaleSlider;
-	////camera.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
-
-	//for (const auto& frame : frames) {
-	//	frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
-	//}
 
 	const int sectionSize = controls.getFrameBufferSize() / 2;
 	const glm::vec2 window(ofGetWidth(), ofGetHeight());
@@ -121,19 +87,6 @@ void ofApp::draw(){
 			frames[i].unbind();
 		}
 	}
-
-	//display masks
-	//const int maskWidth = ofGetWidth() / frameMasks.size();
-	//for (size_t i = 0; i < frameMasks.size(); ++i) {
-	//	frameMasks[i].draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
-	//}
-
-	//if (framesBuffer.size()) {
-	//	const int maskWidth = ofGetWidth() / framesBuffer.size();
-	//	for (size_t i = 0; i < framesBuffer.size(); ++i) {
-	//		framesBuffer[i].getAlphaMask()->draw(i * maskWidth, 0, maskWidth, maskWidth * 9 / 16);
-	//	}
-	//}
 
 	controls.draw();
 }

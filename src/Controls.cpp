@@ -1,5 +1,6 @@
 #include "Controls.h"
 
+//--------------------------------------------------------------
 void Controls::setup() {
 	gui.setup();
 	gui.setName("Controls");
@@ -17,20 +18,24 @@ void Controls::setup() {
 	lc.knob(1, frameBufferSize);
 }
 
+//--------------------------------------------------------------
 void Controls::update() {
 	frameBufferSize &= ~1; // set to even
 }
 
+//--------------------------------------------------------------
 void Controls::draw() {
 	if (show) {
 		gui.draw();
 	}
 }
 
+//--------------------------------------------------------------
 float Controls::getScale() {
 	return scale;
 }
 
+//--------------------------------------------------------------
 int Controls::getFrameBufferSize() {
 	return frameBufferSize;
 }
