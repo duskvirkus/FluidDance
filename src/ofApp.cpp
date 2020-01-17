@@ -43,11 +43,7 @@ void ofApp::setup() {
 	//	frameMasks.push_back(texture);
 	//}
 
-	
-
-	gui.setup();
-	gui.setPosition(0, 0);
-	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
+	controls.setup();
 
 }
 
@@ -72,6 +68,8 @@ void ofApp::update(){
 		//	framesBuffer[i].setAlphaMask(frameMasks[i]);
 		//}
 	}
+
+	controls.update();
 }
 
 //--------------------------------------------------------------
@@ -96,7 +94,7 @@ void ofApp::draw(){
 
 			ofPushMatrix();
 			ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
-			const float scale = scaleSlider;
+			const float scale = controls.getScale();
 			ofScale(glm::vec3(scale, -scale, scale));
 			plane.draw();
 			ofPopMatrix();
@@ -120,7 +118,7 @@ void ofApp::draw(){
 	//	}
 	//}
 
-	gui.draw();
+	controls.draw();
 }
 
 //--------------------------------------------------------------
@@ -201,22 +199,3 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
-////--------------------------------------------------------------
-//void ofApp::setupControls() {
-//	gui.setup();
-//	gui.setPosition(0, 0);
-//	gui.add(scaleSlider.setup("scale", 1.185, 1, 1.185));
-//}
-//
-////--------------------------------------------------------------
-//void ofApp::updateControls(ofEventArgs& args) {
-//	updateTitle();
-//}
-//
-////--------------------------------------------------------------
-//void ofApp::drawControls(ofEventArgs& args) {
-//	//camera.draw(0, 0, ofGetWidth(), ofGetHeight() / 2);
-//
-//	gui.draw();
-//}
