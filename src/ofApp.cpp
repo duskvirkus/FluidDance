@@ -23,7 +23,7 @@ void ofApp::setup() {
 	
 	shader.load("fluid");
 
-	ofSetBackgroundColor(255, 0, 0);
+	ofSetBackgroundColor(0);
 
 	controls.setup();
 
