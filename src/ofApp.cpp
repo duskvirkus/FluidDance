@@ -15,7 +15,6 @@ void ofApp::setup() {
 	ofLogToFile("logfile.log", true);
 #endif
 
-
 	ofEnableAlphaBlending();
 
 	beginCamera();
@@ -26,7 +25,10 @@ void ofApp::setup() {
 
 	ofSetBackgroundColor(255, 0, 0);
 
-	frames.reserve(FRAMES_MAX + 2);
+	controls.setup();
+
+	frames.reserve(controls.getFrameBufferSize() * 4);
+
 	//frameMasks.reserve(FRAMES_MAX);
 
 	//pixelsBuffer.allocate(CAMERA_WIDTH, CAMERA_HEIGHT, OF_PIXELS_RGB);
@@ -49,7 +51,7 @@ void ofApp::setup() {
 	//	frameMasks.push_back(texture);
 	//}
 
-	controls.setup();
+	
 
 }
 
@@ -66,7 +68,7 @@ void ofApp::update(){
 		texture.loadData(pixelsBuffer);
 		frames.push_back(texture);
 
-		while (frames.size() > FRAMES_MAX) {
+		while (frames.size() > controls.getFrameBufferSize()) {
 			frames.erase(frames.begin());
 		}
 
@@ -74,6 +76,8 @@ void ofApp::update(){
 		//	framesBuffer[i].setAlphaMask(frameMasks[i]);
 		//}
 	}
+
+	ofSetFrameRate(30);
 
 	controls.update();
 }
@@ -88,15 +92,22 @@ void ofApp::draw(){
 	//	frame.draw(ofGetWidth() / 2 - width / 2, ofGetHeight() / 2 - height / 2, width, height);
 	//}
 
+	const int sectionSize = controls.getFrameBufferSize() / 2;
+	const glm::vec2 window(ofGetWidth(), ofGetHeight());
+
 	if (frames.size() > 0) {
-		for (size_t i = 0; i < 1; i++) {
+		for (size_t i = 0; i < frames.size(); ++i) {
+			const float offset = ofMap(i, 0, frames.size(), -0.5, 0.5) + ((1.0f / sectionSize) / 2.0f);
+
 			plane.mapTexCoordsFromTexture(frames[i]);
 
 			frames[i].bind();
 
 			shader.begin();
 
-			shader.setUniform2f("u_window", glm::vec2(ofGetWidth(), ofGetHeight()));
+			shader.setUniform2f("u_window", window);
+			shader.setUniform1f("u_section", static_cast<float>(sectionSize));
+			shader.setUniform1f("u_offset", offset);
 
 			ofPushMatrix();
 			ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);

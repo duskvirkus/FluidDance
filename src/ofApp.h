@@ -8,7 +8,6 @@ constexpr char* PROJECT_NAME = "Fluid Dance";
 constexpr char* CREATOR = "Violet Graham";
 constexpr int CAMERA_WIDTH = 1920;
 constexpr int CAMERA_HEIGHT = 1080;
-constexpr int FRAMES_MAX = 10;
 
 class ofApp : public ofBaseApp{
 

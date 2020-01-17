@@ -17,6 +17,7 @@ public:
 	void draw();
 
 	float getScale();
+	int getFrameBufferSize();
 
 private:
 	
@@ -26,5 +27,6 @@ private:
 
 	ofParameter<bool> show;
 	ofParameter<float> scale;
+	ofParameter<int> frameBufferSize;
 
 };

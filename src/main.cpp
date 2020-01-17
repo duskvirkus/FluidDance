@@ -18,7 +18,7 @@ ofGLFWWindowSettings createSettings(const glm::vec2& size, const glm::vec2& posi
 int main(){
 
 	ofGLFWWindowSettings settings;
-	settings.setSize(CAMERA_WIDTH, CAMERA_HEIGHT);
+	settings.setSize(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);
 	settings.setPosition(glm::vec2(0, 30));
 	settings.resizable = false;
 	settings.setGLVersion(3, 2);
