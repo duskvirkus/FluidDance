@@ -42,7 +42,13 @@ void ofApp::update(){
 		ofTexture texture;
 		texture.allocate(pixelsBuffer);
 		texture.loadData(pixelsBuffer);
-		frames.push_back(texture);
+		if (controls.get_overdrive_frames()) {
+			for (int i = 0; i < 1 / (ofGetFrameRate() / 60); i++) {
+				frames.push_back(texture);
+			}
+		} else {
+			frames.push_back(texture);
+		}
 
 		while (frames.size() > controls.getFrameBufferSize()) {
 			frames.erase(frames.begin());

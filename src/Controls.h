@@ -18,6 +18,7 @@ public:
 
 	float getScale();
 	int getFrameBufferSize();
+	bool get_overdrive_frames() const;
 
 private:
 	
@@ -28,5 +29,6 @@ private:
 	ofParameter<bool> show;
 	ofParameter<float> scale;
 	ofParameter<int> frameBufferSize;
+	ofParameter<bool> overdrive_frames;
 
 };
