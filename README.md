@@ -12,6 +12,7 @@ It is currently a work in progress and will hopefully result in a final product 
 
 - [Slit scan (Time diplacement) with AfterEffects](https://www.youtube.com/watch?v=a7V24QcZUy4) by Michiyoshi Shirota
 - [Time Displacement (Slit Scan) with After effects CS6](https://www.youtube.com/watch?v=Vc_d4IO66fs) by Michiyoshi Shirota
+- [Métamorphose](https://fredericfontenoy.com/photography/metamorphose.html) by Frédéric Fontenoy
 
 ### Tools
 
